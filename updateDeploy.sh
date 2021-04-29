@@ -1,0 +1,1 @@
+npm run-script build; git add .; git commit -m "_"; git push; firebase deploy;
