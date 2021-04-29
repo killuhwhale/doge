@@ -118,8 +118,8 @@ class Doge extends Component {
 
   fetchDoge(){
     return new Promise((res, rej) => {
-      let isLocal = window.location.href.indexOf("localhost") == -1;
-      let url = !isLocal? "https://dogec01n.herokuapp.com/doge/": "http://localhost:8000/doge/"
+      let isLocal = window.location.href.indexOf("localhost") > -1;
+      let url = (!isLocal)? "https://dogec01n.herokuapp.com/doge/": "http://localhost:8000/doge/"
       fetch(url)
       .then(response => response.json())
       .then(data => {
