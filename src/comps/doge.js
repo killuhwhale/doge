@@ -110,8 +110,6 @@ class Doge extends Component {
           prices: prices,
           mergedData: mergedData
         })
-
-
       })
     })
   }
@@ -192,7 +190,7 @@ class Doge extends Component {
                 title: {
                   display: true,
                   text: 'Price',
-                  color: 'yellow',
+                  color: 'green',
                   font: {
                     family: 'Roboto',
                     size: 20,
@@ -207,12 +205,12 @@ class Doge extends Component {
                 color: 'blue'
               },
               ticks: {
-                  color: "purple",
+                  color: "blue",
               },
               title: {
                 display: true,
                 text: 'To the moon #doge42069',
-                color: 'pink',
+                color: 'blue',
                 font: {
                   family: 'Roboto',
                   size: 20,
@@ -221,11 +219,6 @@ class Doge extends Component {
                 },
                 padding: {top: 20, left: 0, right: 0, bottom: 0}
               }
-            }
-          },
-          elements: {
-            line: {
-              backgroundColor: "green"
             }
           },
           plugins: {
@@ -237,8 +230,7 @@ class Doge extends Component {
               },
               callbacks: {
                 title: (context) =>  {
-
-                  return context[0]? new Date(parseInt(context[0].label)*1000).toLocaleDateString(): ""
+                  return context[0] != null?context[0].label: ""
                 },
                 label: (context) =>  {
                   return tweets[context.dataIndex].length > 0 ?
