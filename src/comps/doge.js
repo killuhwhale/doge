@@ -1,18 +1,19 @@
+/* Component to display doge data on a chart.
+ *
+ * Fetches data from the API and creates a chart.
+ */
 import React, { Component } from 'react'
-
-import
-{ 	Grid, Paper, Button, Typography, TextField, Select,
-	TableRow, TableHead, TableContainer,
-	TableBody, Table
-}
-from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import { withTheme, withStyles } from '@material-ui/core/styles'
-
 import Chart from 'chart.js/auto';
 
 const MAX_WIDTH = 25
-
 const readPhoto = () => {
+  /* Reads image data into canvas.
+  Returns:
+    promise: resolves canvas with original image.
+
+  */
   return new Promise(res => {
     const canvas = document.createElement('canvas');
     let img = new Image();
@@ -29,6 +30,14 @@ const readPhoto = () => {
 }
 
 const scaleCanvas = (canvas, scale) => {
+  /* Scales the size of a canvas.
+
+  Args:
+    canvas: The canvas to resize
+    scale: The scale to use during resizing.
+  Returns:
+    scaledCanvas: A new canvas scaled from the original.
+   */
   const scaledCanvas = document.createElement('canvas');
   scaledCanvas.width = canvas.width * scale;
   scaledCanvas.height = canvas.height * scale;
@@ -41,6 +50,13 @@ const scaleCanvas = (canvas, scale) => {
 };
 
 let resizePhoto = () => {
+  /* Resizes photo.
+
+  Returns resized image. Currently image url is hardcoded in readPhoto().
+
+  Returns:
+    promise: resolves resized photo.
+  */
   return new Promise((resolve) => {
     readPhoto().then(canvas => {
       while (canvas.width >= 2 * MAX_WIDTH) {
@@ -59,6 +75,7 @@ let resizePhoto = () => {
   })
 }
 
+// A dataPoint represents the data for each day.
 let dataPoint = () => {
   return { price: 0, tweets: [], date: null}
 }
@@ -67,13 +84,17 @@ class Doge extends Component {
   constructor(props){
     super(props)
     this.state = {
-        prices: [],
-        tweets: [],
-        mergedData: {}
+        prices: [],  // list of doge coin prices from API
+        tweets: [],  // list of tweets from API
+        mergedData: {}  // Object of combined prices and tweets on key: ts
     }
   }
 
   componentDidMount(){
+    /* Gets prices and tweets from API.
+
+    Gets and combines data from API.
+     */
     this.fetchDoge()
     .then( prices => {
       this.fetchTweets(prices)
@@ -150,6 +171,15 @@ class Doge extends Component {
   }
 
   createChart(timestamps, data){
+    /* Creates a chart to display doge data.
+
+    Displays Tweets and doge coin price on a chart.
+
+    Args:
+      timestamps: A list of ts of the day corresponding to the data.
+      data: A list of data points; tweets and price
+
+    */
     let tweets = data.map(dp => dp['tweets'])
     let ctx = document.getElementById('chart').getContext('2d');
 
@@ -165,16 +195,19 @@ class Doge extends Component {
                 borderWidth: 3,
                 borderColor: 'rgb(75, 192, 192)',
                 pointStyle: 'rectRot',
+                // Size of radius
                 pointRadius: (context) => {
                   return tweets[context.dataIndex].length > 0 ?
                     15:
                     1;
                 },
+                // Size of width
                 pointBorderWidth: (context) => {
                   return tweets[context.dataIndex].length > 0 ?
                     5:
                     1;
                 },
+                // Size of hover target area
                 pointHitRadius: (context) => {
                   return tweets[context.dataIndex].length > 0 ?
                     5:
@@ -272,13 +305,13 @@ class Doge extends Component {
         }
     })
 
+    // Resizes icon image then updates the chart.
     resizePhoto().then(image => {
       this.chart.data.datasets[0].pointStyle = (context) => {
         return tweets[context.dataIndex].length > 0 ?
           image:
           'circle';
       }
-
       this.chart.update();
     })
   }
@@ -290,8 +323,6 @@ class Doge extends Component {
             <Grid item xs={8}>
               <canvas id="chart"></canvas>
             </Grid>
-
-
         </Grid>
       )
   }

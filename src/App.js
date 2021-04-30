@@ -1,7 +1,5 @@
-import logo from './logo.svg';
 import firebase from "firebase/app";
 import './App.css';
-
 import Doge from './comps/doge'
 
 const firebaseConfig = {
@@ -19,9 +17,6 @@ firebase.initializeApp(firebaseConfig);
 function App() {
   return (
     <div className="App">
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-      </header> */}
       <Doge />
     </div>
   );
