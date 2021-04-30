@@ -60,7 +60,7 @@ let resizePhoto = () => {
 }
 
 let dataPoint = () => {
-  return { price: 0, tweets: []}
+  return { price: 0, tweets: [], date: null}
 }
 
 class Doge extends Component {
@@ -83,13 +83,17 @@ class Doge extends Component {
         for(let price of prices){
           let dp = dataPoint()
           dp['price'] = price.price
+          dp['date'] = new Date(price.ts)
           mergedData[price.ts] = dp
         }
+
         for(let tweet of tweets){
+          // if ts already exists
           if(Object.keys(mergedData).indexOf(tweet.ts.toString()) >= 0){
             mergedData[tweet.ts]['tweets'].push(tweet.tweet)
           }else{
             let dp = dataPoint()
+            dp['date'] = new Date(tweet.ts)
             dp['tweets'].push(tweet.tweet)
             mergedData[tweet.ts] = dp
           }
@@ -97,6 +101,7 @@ class Doge extends Component {
 
         let timestamps = []
         let data = []
+        // Extract data and labels
         for(let ts of Object.keys(mergedData)){
           let dp = mergedData[ts]
           timestamps.push(ts)
