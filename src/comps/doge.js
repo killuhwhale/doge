@@ -97,12 +97,12 @@ class Doge extends Component {
 
         let timestamps = []
         let data = []
-
         for(let ts of Object.keys(mergedData)){
           let dp = mergedData[ts]
           timestamps.push(ts)
           data.push(dp)
         }
+        console.log(mergedData)
 
         this.createChart(timestamps, data)
         this.setState({
