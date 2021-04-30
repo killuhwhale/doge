@@ -83,7 +83,7 @@ class Doge extends Component {
         for(let price of prices){
           let dp = dataPoint()
           dp['price'] = price.price
-          dp['date'] = new Date(price.ts)
+          dp['date'] = new Date(price.ts*1000)
           mergedData[price.ts] = dp
         }
 
@@ -93,7 +93,7 @@ class Doge extends Component {
             mergedData[tweet.ts]['tweets'].push(tweet.tweet)
           }else{
             let dp = dataPoint()
-            dp['date'] = new Date(tweet.ts)
+            dp['date'] = new Date(tweet.ts*1000)
             dp['tweets'].push(tweet.tweet)
             mergedData[tweet.ts] = dp
           }
